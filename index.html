@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DestianSawit - Forum Loker & Komunitas Pemanen Sawit</title>
+    <meta name="description"
+        content="Platform forum lowongan kerja dan komunitas pemanen sawit terlengkap. Cari loker, diskusi gaji, dan terhubung dengan sesama pekerja sawit.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Splash / Loading -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-icon">🌴</div>
+            <h1>DestianSawit</h1>
+            <p>Forum Loker & Komunitas Pemanen Sawit</p>
+            <div class="splash-loader">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">🌴</span>
+                <span class="logo-text">DestianSawit</span>
+            </div>
+            <button id="sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="user-card" id="user-card">
+            <div class="user-avatar" id="nav-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <span class="user-name" id="nav-username">Guest</span>
+                <span class="user-role" id="nav-role">Belum Login</span>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item active" data-page="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </li>
+            <li class="nav-item" data-page="loker">
+                <i class="fas fa-briefcase"></i>
+                <span>Loker Sawit</span>
+                <span class="badge" id="loker-count">0</span>
+            </li>
+            <li class="nav-item" data-page="forum">
+                <i class="fas fa-comments"></i>
+                <span>Forum Diskusi</span>
+                <span class="badge" id="forum-count">0</span>
+            </li>
+            <li class="nav-item" data-page="chat">
+                <i class="fas fa-envelope"></i>
+                <span>Pesan</span>
+                <span class="badge badge-red" id="chat-count">0</span>
+            </li>
+            <li class="nav-item" data-page="gaji">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Info Gaji</span>
+            </li>
+            <li class="nav-item" data-page="profil">
+                <i class="fas fa-user-circle"></i>
+                <span>Profil Saya</span>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button id="btn-login" class="btn-sidebar-action" onclick="showLoginModal()">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Masuk / Daftar</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-nav">
+        <button class="mobile-nav-item active" data-page="dashboard">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </button>
+        <button class="mobile-nav-item" data-page="loker">
+            <i class="fas fa-briefcase"></i>
+            <span>Loker</span>
+        </button>
+        <button class="mobile-nav-item" data-page="forum">
+            <i class="fas fa-comments"></i>
+            <span>Forum</span>
+        </button>
+        <button class="mobile-nav-item" data-page="chat">
+            <i class="fas fa-envelope"></i>
+            <span>Pesan</span>
+        </button>
+        <button class="mobile-nav-item" data-page="gaji">
+            <i class="fas fa-coins"></i>
+            <span>Gaji</span>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-content">
+        <!-- ============ DASHBOARD PAGE ============ -->
+        <section id="page-dashboard" class="page active">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Selamat Datang! 👋</h1>
+                    <p class="page-subtitle">Forum Loker & Komunitas Pemanen Sawit #1 Indonesia</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="navigateTo('loker')">
+                        <i class="fas fa-plus"></i> Posting Loker
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card stat-green">
+                    <div class="stat-icon"><i class="fas fa-briefcase"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stat-loker">0</span>
+                        <span class="stat-label">Loker Tersedia</span>
+                    </div>
+                    <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 12%</div>
+                </div>
+                <div class="stat-card stat-blue">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stat-users">0</span>
+                        <span class="stat-label">Anggota Aktif</span>
+                    </div>
+                    <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 8%</div>
+                </div>
+                <div class="stat-card stat-orange">
+                    <div class="stat-icon"><i class="fas fa-comments"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stat-diskusi">0</span>
+                        <span class="stat-label">Diskusi Forum</span>
+                    </div>
+                    <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 15%</div>
+                </div>
+                <div class="stat-card stat-purple">
+                    <div class="stat-icon"><i class="fas fa-handshake"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stat-hired">0</span>
+                        <span class="stat-label">Berhasil Dipekerjakan</span>
+                    </div>
+                    <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 20%</div>
+                </div>
+            </div>
+
+            <!-- Featured Section -->
+            <div class="dashboard-grid">
+                <!-- Loker Terbaru -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-fire"></i> Loker Terbaru</h3>
+                        <a href="#" onclick="navigateTo('loker')" class="card-link">Lihat Semua →</a>
+                    </div>
+                    <div class="card-body" id="dashboard-loker-list">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <!-- Forum Aktif -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-bolt"></i> Diskusi Populer</h3>
+                        <a href="#" onclick="navigateTo('forum')" class="card-link">Lihat Semua →</a>
+                    </div>
+                    <div class="card-body" id="dashboard-forum-list">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Info Banner -->
+            <div class="info-banner">
+                <div class="info-banner-icon">💡</div>
+                <div class="info-banner-content">
+                    <h4>Tips Pemanen Sawit</h4>
+                    <p>Pastikan selalu memakai APD (Alat Pelindung Diri) saat bekerja. Keselamatan kerja adalah
+                        prioritas utama!</p>
+                </div>
+                <button class="btn btn-outline" onclick="navigateTo('forum')">Diskusikan</button>
+            </div>
+        </section>
+
+        <!-- ============ LOKER PAGE ============ -->
+        <section id="page-loker" class="page">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">🌴 Loker Sawit</h1>
+                    <p class="page-subtitle">Temukan lowongan kerja pemanen sawit terbaik</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="showAddLokerModal()">
+                        <i class="fas fa-plus"></i> Tambah Loker
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loker Filters -->
+            <div class="filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="loker-search" placeholder="Cari loker, lokasi, perusahaan..."
+                        oninput="filterLoker()">
+                </div>
+                <div class="filter-group">
+                    <select id="filter-provinsi" onchange="filterLoker()">
+                        <option value="">Semua Provinsi</option>
+                        <option value="Riau">Riau</option>
+                        <option value="Sumatera Utara">Sumatera Utara</option>
+                        <option value="Kalimantan Barat">Kalimantan Barat</option>
+                        <option value="Kalimantan Tengah">Kalimantan Tengah</option>
+                        <option value="Kalimantan Timur">Kalimantan Timur</option>
+                        <option value="Kalimantan Selatan">Kalimantan Selatan</option>
+                        <option value="Sumatera Selatan">Sumatera Selatan</option>
+                        <option value="Jambi">Jambi</option>
+                        <option value="Bengkulu">Bengkulu</option>
+                        <option value="Lampung">Lampung</option>
+                        <option value="Papua">Papua</option>
+                        <option value="Sulawesi">Sulawesi</option>
+                    </select>
+                    <select id="filter-tipe" onchange="filterLoker()">
+                        <option value="">Semua Tipe</option>
+                        <option value="Tetap">Karyawan Tetap</option>
+                        <option value="Kontrak">Kontrak</option>
+                        <option value="Harian">Harian Lepas</option>
+                        <option value="Borongan">Borongan</option>
+                    </select>
+                    <select id="filter-gaji" onchange="filterLoker()">
+                        <option value="">Semua Gaji</option>
+                        <option value="1">
+                            < Rp 2 Juta</option>
+                        <option value="2">Rp 2-4 Juta</option>
+                        <option value="3">Rp 4-6 Juta</option>
+                        <option value="4">> Rp 6 Juta</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Loker List -->
+            <div class="loker-grid" id="loker-list">
+                <!-- Filled by JS -->
+            </div>
+        </section>
+
+        <!-- ============ FORUM PAGE ============ -->
+        <section id="page-forum" class="page">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">💬 Forum Diskusi</h1>
+                    <p class="page-subtitle">Diskusi dan berbagi pengalaman dengan sesama pekerja sawit</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="showAddForumModal()">
+                        <i class="fas fa-plus"></i> Buat Topik Baru
+                    </button>
+                </div>
+            </div>
+
+            <!-- Forum Categories -->
+            <div class="forum-categories">
+                <button class="category-btn active" data-cat="all" onclick="filterForum('all')">
+                    <i class="fas fa-globe"></i> Semua
+                </button>
+                <button class="category-btn" data-cat="pengalaman" onclick="filterForum('pengalaman')">
+                    <i class="fas fa-book"></i> Pengalaman
+                </button>
+                <button class="category-btn" data-cat="tips" onclick="filterForum('tips')">
+                    <i class="fas fa-lightbulb"></i> Tips & Trik
+                </button>
+                <button class="category-btn" data-cat="gaji" onclick="filterForum('gaji')">
+                    <i class="fas fa-money-bill"></i> Gaji & Benefit
+                </button>
+                <button class="category-btn" data-cat="alat" onclick="filterForum('alat')">
+                    <i class="fas fa-tools"></i> Alat Kerja
+                </button>
+                <button class="category-btn" data-cat="curhat" onclick="filterForum('curhat')">
+                    <i class="fas fa-heart"></i> Curhat
+                </button>
+            </div>
+
+            <!-- Forum List -->
+            <div class="forum-list" id="forum-list">
+                <!-- Filled by JS -->
+            </div>
+        </section>
+
+        <!-- ============ CHAT PAGE ============ -->
+        <section id="page-chat" class="page">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">✉️ Pesan</h1>
+                    <p class="page-subtitle">Kirim pesan langsung ke perusahaan atau sesama pekerja</p>
+                </div>
+            </div>
+
+            <div class="chat-container">
+                <!-- Chat Sidebar -->
+                <div class="chat-sidebar" id="chat-sidebar">
+                    <div class="chat-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Cari percakapan..." id="chat-search-input">
+                    </div>
+                    <div class="chat-list" id="chat-list">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <!-- Chat Main -->
+                <div class="chat-main" id="chat-main">
+                    <div class="chat-empty-state">
+                        <i class="fas fa-comments"></i>
+                        <h3>Pilih Percakapan</h3>
+                        <p>Pilih percakapan di samping atau mulai chat baru</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ GAJI PAGE ============ -->
+        <section id="page-gaji" class="page">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">💰 Info Gaji Pemanen Sawit</h1>
+                    <p class="page-subtitle">Panduan gaji dan tunjangan pemanen sawit di berbagai daerah</p>
+                </div>
+            </div>
+
+            <!-- Gaji Overview Cards -->
+            <div class="gaji-overview">
+                <div class="gaji-card gaji-min">
+                    <div class="gaji-card-label">Gaji Minimum</div>
+                    <div class="gaji-card-value">Rp 1.800.000</div>
+                    <div class="gaji-card-desc">Harian lepas / pemula</div>
+                </div>
+                <div class="gaji-card gaji-avg">
+                    <div class="gaji-card-label">Gaji Rata-rata</div>
+                    <div class="gaji-card-value">Rp 3.500.000</div>
+                    <div class="gaji-card-desc">Pekerja berpengalaman</div>
+                </div>
+                <div class="gaji-card gaji-max">
+                    <div class="gaji-card-label">Gaji Tertinggi</div>
+                    <div class="gaji-card-value">Rp 7.000.000</div>
+                    <div class="gaji-card-desc">Mandor / Supervisor</div>
+                </div>
+            </div>
+
+            <!-- Gaji Table by Region -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-map-marked-alt"></i> Gaji per Daerah</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="gaji-table">
+                            <thead>
+                                <tr>
+                                    <th>Provinsi</th>
+                                    <th>Posisi</th>
+                                    <th>Gaji/Bulan</th>
+                                    <th>Tunjangan</th>
+                                    <th>Premi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gaji-table-body">
+                                <!-- Filled by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefit Section -->
+            <div class="benefit-section">
+                <h3><i class="fas fa-gift"></i> Tunjangan & Benefit Umum</h3>
+                <div class="benefit-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🏠</div>
+                        <h4>Mess / Perumahan</h4>
+                        <p>Tempat tinggal gratis di area kebun</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🍚</div>
+                        <h4>Jatah Makan</h4>
+                        <p>Makan 3x sehari atau uang makan</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🏥</div>
+                        <h4>BPJS Kesehatan</h4>
+                        <p>Jaminan kesehatan untuk pekerja</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💊</div>
+                        <h4>BPJS Ketenagakerjaan</h4>
+                        <p>Jaminan kecelakaan kerja</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎓</div>
+                        <h4>Beasiswa Anak</h4>
+                        <p>Program beasiswa untuk anak pekerja</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🏍️</div>
+                        <h4>Transport</h4>
+                        <p>Tunjangan transportasi bulanan</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PROFIL PAGE ============ -->
+        <section id="page-profil" class="page">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">👤 Profil Saya</h1>
+                    <p class="page-subtitle">Kelola informasi profil dan pengaturan akun</p>
+                </div>
+            </div>
+
+            <div class="profil-container" id="profil-container">
+                <!-- Filled by JS based on login state -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ============ MODALS ============ -->
+
+    <!-- Login/Register Modal -->
+    <div class="modal-overlay" id="modal-login">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-login-title">Masuk ke DestianSawit</h2>
+                <button class="modal-close" onclick="closeModal('modal-login')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Login Form -->
+                <div id="login-form-container">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Username / Email</label>
+                        <input type="text" id="login-username" placeholder="Masukkan username atau email">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="login-password" placeholder="Masukkan password">
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="handleLogin()">
+                        <i class="fas fa-sign-in-alt"></i> Masuk
+                    </button>
+                    <div class="form-divider"><span>atau</span></div>
+                    <button class="btn btn-outline btn-full" onclick="toggleRegister()">
+                        <i class="fas fa-user-plus"></i> Buat Akun Baru
+                    </button>
+                </div>
+
+                <!-- Register Form -->
+                <div id="register-form-container" style="display:none">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Nama Lengkap</label>
+                        <input type="text" id="reg-nama" placeholder="Nama lengkap Anda">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-at"></i> Username</label>
+                        <input type="text" id="reg-username" placeholder="Pilih username">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="reg-email" placeholder="Email aktif Anda">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> No. HP</label>
+                        <input type="tel" id="reg-phone" placeholder="Nomor HP aktif">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="reg-password" placeholder="Buat password">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-user-tag"></i> Daftar Sebagai</label>
+                        <div class="role-selector">
+                            <label class="role-option active" id="role-pekerja">
+                                <input type="radio" name="reg-role" value="pekerja" checked>
+                                <div class="role-card">
+                                    <i class="fas fa-hard-hat"></i>
+                                    <span>Pekerja Sawit</span>
+                                </div>
+                            </label>
+                            <label class="role-option" id="role-perusahaan">
+                                <input type="radio" name="reg-role" value="perusahaan">
+                                <div class="role-card">
+                                    <i class="fas fa-building"></i>
+                                    <span>Perusahaan</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="handleRegister()">
+                        <i class="fas fa-user-plus"></i> Daftar Sekarang
+                    </button>
+                    <div class="form-divider"><span>atau</span></div>
+                    <button class="btn btn-outline btn-full" onclick="toggleRegister()">
+                        <i class="fas fa-sign-in-alt"></i> Sudah Punya Akun? Masuk
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Loker Modal -->
+    <div class="modal-overlay" id="modal-add-loker">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h2><i class="fas fa-briefcase"></i> Tambah Loker Baru</h2>
+                <button class="modal-close" onclick="closeModal('modal-add-loker')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nama Perusahaan / Kebun</label>
+                        <input type="text" id="loker-perusahaan" placeholder="PT. Sawit Makmur Jaya">
+                    </div>
+                    <div class="form-group">
+                        <label>Posisi</label>
+                        <select id="loker-posisi">
+                            <option value="Pemanen">Pemanen / Pemotongan TBS</option>
+                            <option value="Pemupuk">Pemupuk</option>
+                            <option value="Perawat Tanaman">Perawat Tanaman</option>
+                            <option value="Supir Truk">Supir Truk Angkut</option>
+                            <option value="Mandor">Mandor / Supervisor</option>
+                            <option value="Mekanik">Mekanik Alat Berat</option>
+                            <option value="Security">Security / Satpam</option>
+                            <option value="Admin">Admin / Staff Kantor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Provinsi</label>
+                        <select id="loker-lokasi">
+                            <option value="Riau">Riau</option>
+                            <option value="Sumatera Utara">Sumatera Utara</option>
+                            <option value="Kalimantan Barat">Kalimantan Barat</option>
+                            <option value="Kalimantan Tengah">Kalimantan Tengah</option>
+                            <option value="Kalimantan Timur">Kalimantan Timur</option>
+                            <option value="Kalimantan Selatan">Kalimantan Selatan</option>
+                            <option value="Sumatera Selatan">Sumatera Selatan</option>
+                            <option value="Jambi">Jambi</option>
+                            <option value="Bengkulu">Bengkulu</option>
+                            <option value="Papua">Papua</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Kabupaten / Kota</label>
+                        <input type="text" id="loker-kota" placeholder="Nama kota/kabupaten">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipe Kerja</label>
+                        <select id="loker-tipe">
+                            <option value="Tetap">Karyawan Tetap</option>
+                            <option value="Kontrak">Kontrak</option>
+                            <option value="Harian">Harian Lepas</option>
+                            <option value="Borongan">Borongan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Gaji (Rp/bulan)</label>
+                        <input type="number" id="loker-gaji" placeholder="3500000">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi Pekerjaan</label>
+                    <textarea id="loker-deskripsi" rows="4"
+                        placeholder="Jelaskan detail pekerjaan, syarat, dan benefit..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kontak HP/WA</label>
+                        <input type="tel" id="loker-kontak" placeholder="08xxxxxxxxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>Jumlah Dibutuhkan</label>
+                        <input type="number" id="loker-jumlah" placeholder="10" value="5">
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="submitLoker()">
+                    <i class="fas fa-paper-plane"></i> Posting Loker
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Forum Topic Modal -->
+    <div class="modal-overlay" id="modal-add-forum">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-comments"></i> Buat Topik Baru</h2>
+                <button class="modal-close" onclick="closeModal('modal-add-forum')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Judul Topik</label>
+                    <input type="text" id="forum-judul" placeholder="Tulis judul topik diskusi...">
+                </div>
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <select id="forum-kategori">
+                        <option value="pengalaman">Pengalaman</option>
+                        <option value="tips">Tips & Trik</option>
+                        <option value="gaji">Gaji & Benefit</option>
+                        <option value="alat">Alat Kerja</option>
+                        <option value="curhat">Curhat</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Isi Diskusi</label>
+                    <textarea id="forum-isi" rows="6" placeholder="Tulis isi topik diskusi..."></textarea>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="submitForum()">
+                    <i class="fas fa-paper-plane"></i> Posting Topik
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forum Detail Modal -->
+    <div class="modal-overlay" id="modal-forum-detail">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h2 id="forum-detail-title">Detail Diskusi</h2>
+                <button class="modal-close" onclick="closeModal('modal-forum-detail')">&times;</button>
+            </div>
+            <div class="modal-body" id="forum-detail-body">
+                <!-- Fill by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loker Detail Modal -->
+    <div class="modal-overlay" id="modal-loker-detail">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h2 id="loker-detail-title">Detail Loker</h2>
+                <button class="modal-close" onclick="closeModal('modal-loker-detail')">&times;</button>
+            </div>
+            <div class="modal-body" id="loker-detail-body">
+                <!-- Fill by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
